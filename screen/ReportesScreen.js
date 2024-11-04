@@ -1,4 +1,3 @@
-
 import { View, Text, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useLayoutEffect, useState , useEffect} from "react";
@@ -36,8 +35,13 @@ function ReportesScreen(){
         })
     },[])
 
+    useEffect(() => {
+        setShowModal(false); 
+    }, []);
+    
+
     useEffect( ()=>{
-        async function getReport(){ //era getTreas
+        async function getReport(){
             try{
             const reportes = await getReportes()
             reporteCTX.modifyReportes(reportes)
@@ -52,7 +56,7 @@ function ReportesScreen(){
     
 
     function renderReporte(obj){
-        return <ReporteItem id={obj.item.id} name={obj.item.name} date={obj.item.date.toString()}/>
+        return <ReporteItem id={obj.item.id} name={obj.item.name} date={obj.item.date.toString()} location={obj.item.location}/>
     }
 
     return (

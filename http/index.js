@@ -41,5 +41,5 @@ export async function getReportes() {
         reportes.push(obj);
     }
 
-    return reportes;
+    return reportes.reverse();
 }

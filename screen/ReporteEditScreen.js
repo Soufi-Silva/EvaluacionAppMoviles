@@ -1,4 +1,3 @@
-//
 import { View, Text, TextInput, StyleSheet, Button} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";

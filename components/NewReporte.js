@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { saveReporte } from '../http';
 import { LocationContext } from '../context/LocationContext';
 
-function NewReporte({ showModal, hideModal, onAddReporte }) {
+function NewReporte({ onAddReporte }) {
     const [name, setName] = useState('');
     const { location, setLocation } = useContext(LocationContext);
     const navigation = useNavigation();
@@ -18,63 +18,58 @@ function NewReporte({ showModal, hideModal, onAddReporte }) {
 
     async function handleAddReporte() {
         if (!name || !location) {
-            alert('Por favor, complete la descripción y seleccione una ubicación.');
+            alert('Por favor, descripción y/o seleccione una ubicación correcta.');
             return;
         }
-
+    
         const newReporte = {
             id: Date.now().toString(),
             name: name,
             date: new Date().toISOString(),
             location: location
         };
-
+    
         try {
             await saveReporte(newReporte);
-            onAddReporte(newReporte);
-            hideModal();
+            if (onAddReporte) {
+                onAddReporte(newReporte); 
+            }
+            navigation.goBack('ReportesScreen');
             setLocation(null);
         } catch (error) {
             console.error("Error al guardar el reporte:", error);
         }
-    }
+    }    
 
     function handleSelectLocation() {
         navigation.navigate('Map');
     }
 
-    function handleClose() {
-        hideModal();
-        setLocation(null); 
-    }
-
     return (
-        <Modal visible={showModal} animationType="slide">
-            <View style={styles.container}>
-                <Image source={require('../assets/logo.png')} style={styles.logo} />
-                <Text style={styles.text}>Nuevo Reporte</Text>
-                <TextInput
-                    onChangeText={(text) => setName(text)}
-                    style={styles.input}
-                    placeholder="Descripción de la incidencia"
-                    color="white"
-                />
-                <TouchableOpacity style={styles.button} onPress={handleSelectLocation}>
-                    <Text style={styles.buttonText}>Seleccionar Ubicación</Text>
-                </TouchableOpacity>
-                {location && (
-                    <Text style={styles.locationText}>
-                        Ubicación seleccionada: {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
-                    </Text>
-                )}
-                <TouchableOpacity style={styles.button} onPress={handleAddReporte}>
-                    <Text style={styles.buttonText}>Guardar Reporte</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={handleClose}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-            </View>
-        </Modal>
+        <View style={styles.container}>
+            <Image source={require('../assets/logo.png')} style={styles.logo} />
+            <Text style={styles.text}>Nuevo Reporte</Text>
+            <TextInput
+                onChangeText={(text) => setName(text)}
+                style={styles.input}
+                placeholder="Descripción de la incidencia"
+                color="white"
+            />
+            <TouchableOpacity style={styles.button} onPress={handleSelectLocation}>
+                <Text style={styles.buttonText}>Seleccionar Ubicación</Text>
+            </TouchableOpacity>
+            {location && (
+                <Text style={styles.locationText}>
+                    Ubicación seleccionada: {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
+                </Text>
+            )}
+            <TouchableOpacity style={styles.button} onPress={handleAddReporte}>
+                <Text style={styles.buttonText}>Guardar Reporte</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack('ReportesScreen')}>
+                <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 

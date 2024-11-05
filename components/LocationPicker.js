@@ -1,4 +1,3 @@
-// LocationPicker.js
 import React, { useState } from 'react';
 import { Button, View, Alert, Text } from 'react-native';
 import * as Location from 'expo-location';
@@ -8,13 +7,13 @@ function LocationPicker({ onLocationSelected }) {
     const [location, setLocation] = useState(null);
     const navigation = useNavigation();
 
-    async function verifyPermissions() {
+    async function verifyPermissions() {  //no se porque no entra a pedir los permisos, ver mas adelante
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert('Permiso denegado', 'Se necesita el permiso de ubicación.');
             return false;
         }
-        return true;
+        return true; //falta revisar abajo porque el boton de "Usar ubicación del dispositivo"" ya no aparece y lo tenia funcionando 
     }
 
     async function getLocationHandler() {
@@ -30,13 +29,15 @@ function LocationPicker({ onLocationSelected }) {
         onLocationSelected(selectedLocation); 
     }
 
-    function pickOnMapHandler() {
-        navigation.navigate('Map');
+    function pickOnMapHandler() { 
+        navigation.navigate('Map', {
+            onLocationSelected: onLocationSelected, 
+        });
     }
 
     return (
         <View>
-            <Button title="Usar ubicación del dispositivo" onPress={getLocationHandler} />
+            <Button title="Usar ubicación del dispositivo" onPress={getLocationHandler} />  
             <Button title="Seleccionar en el mapa" onPress={pickOnMapHandler} />
             {location && <Text>Ubicación seleccionada: {location.lat}, {location.lng}</Text>}
         </View>

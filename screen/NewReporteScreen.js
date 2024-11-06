@@ -7,8 +7,10 @@ function NewReporteScreen({ navigation }) { //cree esto para poder usar el conte
         <View style={{ flex: 1 }}>
             <NewReporte 
                 onAddReporte={() => navigation.goBack()} 
+                
             />
         </View>
+        
     );
 }
 

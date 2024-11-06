@@ -3,6 +3,7 @@ import { View, Text, Button, Modal, TextInput, StyleSheet, TouchableOpacity, Ima
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { saveReporte } from '../http';
 import { LocationContext } from '../context/LocationContext';
+import ImagePicker from './ImagePicker';
 
 function NewReporte({ onAddReporte }) {
     const [name, setName] = useState('');
@@ -55,6 +56,7 @@ function NewReporte({ onAddReporte }) {
                 placeholder="Descripción de la incidencia"
                 color="white"
             />
+            <ImagePicker/>
             <TouchableOpacity style={styles.button} onPress={handleSelectLocation}>
                 <Text style={styles.buttonText}>Seleccionar Ubicación</Text>
             </TouchableOpacity>
@@ -95,7 +97,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#3A9AD9",
         borderRadius: 10,
         color: "white",
-        fontSize: 16,
+        fontSize: 16
+        
     },
     text: {
         color: "#E1E8ED",

@@ -19,10 +19,22 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+      , "permissions":[
+        "CAMERA",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "entryPoint": "./App.js"
-  }
+  },
+  "plugins":[
+    [
+      "expo-image-picker",
+      {
+        "cameraPermission":"La aplicación necesita acceder a la camara para tomar fotos."
+      }
+    ]
+  ]
 }
